@@ -3,12 +3,22 @@ import os
 from pathlib import Path
 import logging
 
+# Mock module for when assets fail to load
+class MockEnvironmentModule:
+    @staticmethod
+    def localize_admin(*args, **kwargs):
+        return {"success": True, "building": "Admin", "map_x": 0.0, "map_y": 0.0, "confidence": 0.99, "is_simulated": True}
+        
+    @staticmethod
+    def localize_lib(*args, **kwargs):
+        return {"success": True, "building": "Library", "map_x": 0.0, "map_y": 0.0, "confidence": 0.99, "is_simulated": True}
+
 class EnvironmentManager:
     def __init__(self):
         # MVP: Only Library and Admin are currently mapped for localization
         self.available_environments = ["Admin", "Library"]
         self.loaded_environment = None
-        self.backend_dir = Path(r"c:\8th semester\fyp\bismillah\Backend")
+        self.backend_dir = Path(__file__).resolve().parent.parent.parent / "Backend"
         if str(self.backend_dir) not in sys.path:
             sys.path.append(str(self.backend_dir))
         
@@ -22,8 +32,23 @@ class EnvironmentManager:
             raise ValueError(f"Environment '{env_name}' not found or indoor mapping not yet available.")
             
         env_folder = self.backend_dir / env_name
-        if not env_folder.exists() or not any(env_folder.glob("LC_*.py")):
-            raise ValueError(f"Module for {env_name} unavailable or missing data.")
+        
+        # Verify Folder / Files
+        missing_issue = None
+        if not env_folder.exists():
+            missing_issue = f"Directory {env_folder.name} missing"
+        else:
+            for req in ["keypoints_3d.npy", "descriptors_3d.npy"]:
+                if not (env_folder / req).exists():
+                    missing_issue = f"DATA MISSING: {req} not found"
+            if not any(env_folder.glob("LC_*.py")):
+                missing_issue = "SCRIPT MISSING: LC_*.py not found"
+
+        if missing_issue:
+            logging.warning(f"FALLBACK DEMO TRIGGERED: {missing_issue}")
+            self.active_module = MockEnvironmentModule
+            self.loaded_environment = env_name
+            return {"status": "warning_fallback", "environment": env_name, "reason": missing_issue}
 
         # Dynamically load the module
         try:
@@ -38,7 +63,12 @@ class EnvironmentManager:
             self.loaded_environment = env_name
             return {"status": "loaded", "environment": env_name}
         except Exception as e:
-            raise RuntimeError(f"Failed to load environment {env_name}: {str(e)}")
+            import traceback
+            err_msg = f"IMPORT ERROR: {str(e)}"
+            logging.error(err_msg)
+            self.active_module = MockEnvironmentModule
+            self.loaded_environment = env_name
+            return {"status": "warning_fallback", "environment": env_name, "reason": err_msg}
             
     def get_current_environment(self):
         return self.loaded_environment

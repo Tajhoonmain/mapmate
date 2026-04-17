@@ -21,7 +21,7 @@ import datetime
 THIS_DIR = Path(__file__).resolve().parent
 KEYPOINTS_3D_PATH = THIS_DIR / "keypoints_3d.npy"
 DESCRIPTORS_3D_PATH = THIS_DIR / "descriptors_3d.npy"
-TRANSFORM_PATH = Path(r"c:\8th semester\fyp\bismillah\transform_library.json")
+TRANSFORM_PATH = THIS_DIR.parent.parent / "transform_library.json"
 LOG_DIR = THIS_DIR / "logs"
 LOG_DIR.mkdir(exist_ok=True)
 
