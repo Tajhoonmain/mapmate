@@ -4,6 +4,7 @@ import Dashboard from './pages/Dashboard';
 import EnvironmentSelection from './pages/EnvironmentSelection';
 import DestinationInput from './pages/DestinationInput';
 import ARNavigation from './pages/ARNavigation';
+import Landing from './pages/Landing';
 
 function App() {
   return (
@@ -15,7 +16,8 @@ function App() {
             <Route path="/environment" element={<EnvironmentSelection />} />
             <Route path="/destination" element={<DestinationInput />} />
             <Route path="/ar" element={<ARNavigation />} />
-            <Route path="/" element={<Navigate to="/dashboard" replace />} />
+            <Route path="/" element={<Landing />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Route>
         </Routes>
       </div>

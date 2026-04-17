@@ -1,12 +1,13 @@
 services:
   - type: web
-    name: mapmate-backend
+    name: mapmate-core
     env: python
-    buildCommand: "cd mapmate_backend && pip install -r requirements.txt"
+    # Combined Build Command: Builds React then preps Python
+    buildCommand: "cd mapmate_frontend && npm install && npm run build && cd ../mapmate_backend && pip install -r requirements.txt"
+    # Unified Start Command: Runs Uvicorn which now correctly serves React static files automatically
     startCommand: "cd mapmate_backend && uvicorn main:app --host 0.0.0.0 --port $PORT"
-
-  - type: web
-    name: mapmate-frontend
-    env: node
-    buildCommand: "cd mapmate_frontend && npm install && npm run build"
-    startCommand: "npm run preview --prefix mapmate_frontend -- --port $PORT --host 0.0.0.0"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: NODE_VERSION
+        value: 20.x
