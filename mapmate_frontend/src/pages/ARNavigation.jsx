@@ -112,7 +112,8 @@ export default function ARNavigation() {
         formData.append("file", blob, "camera_frame.jpg");
 
         try {
-          const res = await fetch("http://localhost:8000/localize", {
+          const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+          const res = await fetch(`${API_URL}/localize`, {
             method: "POST",
             body: formData,
           });
