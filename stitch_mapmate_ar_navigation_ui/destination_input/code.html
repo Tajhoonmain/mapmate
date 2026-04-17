@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-container": "#00213e",
+                    "surface-container-high": "#201f1f",
+                    "tertiary-fixed-dim": "#51a7fe",
+                    "primary": "#8ff5ff",
+                    "background": "#0e0e0e",
+                    "primary-dim": "#00deec",
+                    "secondary": "#2ff801",
+                    "on-primary-fixed-variant": "#005e64",
+                    "tertiary-dim": "#4aa2f9",
+                    "on-secondary-fixed-variant": "#0d6200",
+                    "secondary-dim": "#2be800",
+                    "surface-tint": "#8ff5ff",
+                    "surface": "#0e0e0e",
+                    "on-error-container": "#ffa8a3",
+                    "error": "#ff716c",
+                    "surface-container-lowest": "#000000",
+                    "inverse-primary": "#006a71",
+                    "secondary-fixed-dim": "#2be800",
+                    "primary-fixed": "#00eefc",
+                    "on-background": "#ffffff",
+                    "surface-container-highest": "#262626",
+                    "surface-dim": "#0e0e0e",
+                    "secondary-fixed": "#2ff801",
+                    "primary-container": "#00eefc",
+                    "tertiary-container": "#4aa2f9",
+                    "on-surface": "#ffffff",
+                    "outline-variant": "#494847",
+                    "on-surface-variant": "#adaaaa",
+                    "surface-container-low": "#131313",
+                    "surface-variant": "#262626",
+                    "on-primary-fixed": "#003f43",
+                    "on-tertiary-fixed-variant": "#003b68",
+                    "surface-bright": "#2c2c2c",
+                    "outline": "#777575",
+                    "surface-container": "#1a1919",
+                    "primary-fixed-dim": "#00deec",
+                    "error-container": "#9f0519",
+                    "inverse-on-surface": "#565554",
+                    "on-tertiary-fixed": "#001930",
+                    "tertiary-fixed": "#72b5ff",
+                    "error-dim": "#d7383b",
+                    "on-secondary-fixed": "#064200",
+                    "inverse-surface": "#fcf8f8",
+                    "on-error": "#490006",
+                    "on-secondary": "#0b5800",
+                    "on-tertiary": "#002e52",
+                    "on-primary-container": "#005359",
+                    "tertiary": "#65afff",
+                    "on-primary": "#005d63"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Space Grotesk"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .voice-wave-bar {
+            width: 4px;
+            border-radius: 9999px;
+            background-color: #8ff5ff;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body selection:bg-primary/30 antialiased overflow-hidden">
+<!-- TopAppBar Shell -->
+<header class="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-xl flex justify-between items-center px-6 h-16 shadow-[0_0_20px_rgba(143,245,255,0.06)]">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-cyan-400" data-icon="explore">explore</span>
+<span class="font-space-grotesk font-bold tracking-tight text-2xl text-cyan-400 tracking-tighter">MapMate</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 text-zinc-500 hover:bg-zinc-800/50 transition-colors active:scale-95 duration-200">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</header>
+<main class="pt-20 pb-32 px-6 max-w-2xl mx-auto h-screen flex flex-col">
+<!-- Search and Voice State -->
+<section class="mt-4 space-y-8">
+<!-- Search Container -->
+<div class="relative group">
+<div class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-primary/60" data-icon="near_me">near_me</span>
+</div>
+<input class="w-full bg-surface-container-lowest border border-outline-variant/15 rounded-xl py-5 pl-12 pr-14 focus:outline-none focus:ring-1 focus:ring-primary/50 text-on-surface placeholder:text-on-surface-variant font-medium text-lg transition-all shadow-inner" placeholder="Where to next?" type="text"/>
+<div class="absolute inset-y-0 right-4 flex items-center">
+<button class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary hover:bg-primary/20 transition-all active:scale-90">
+<span class="material-symbols-outlined" data-icon="mic" style="font-variation-settings: 'FILL' 1;">mic</span>
+</button>
+</div>
+</div>
+<!-- Active Voice UI -->
+<div class="bg-surface-container-high rounded-2xl p-8 flex flex-col items-center justify-center space-y-6 relative overflow-hidden border border-primary/5 shadow-[0_0_40px_rgba(143,245,255,0.03)]">
+<div class="absolute top-0 left-0 w-1 h-full bg-secondary"></div>
+<div class="text-center space-y-1">
+<span class="text-xs font-label uppercase tracking-widest text-primary/60 font-semibold">Listening Now</span>
+<h2 class="text-2xl font-headline font-medium text-on-surface">"Take me to the Lab..."</h2>
+</div>
+<!-- Voice Visualizer -->
+<div class="flex items-center justify-center gap-1 h-12">
+<div class="voice-wave-bar h-4 opacity-40"></div>
+<div class="voice-wave-bar h-8 opacity-60"></div>
+<div class="voice-wave-bar h-12 opacity-90"></div>
+<div class="voice-wave-bar h-10 opacity-100 shadow-[0_0_10px_rgba(143,245,255,0.5)]"></div>
+<div class="voice-wave-bar h-6 opacity-80"></div>
+<div class="voice-wave-bar h-9 opacity-95"></div>
+<div class="voice-wave-bar h-5 opacity-50"></div>
+<div class="voice-wave-bar h-7 opacity-70"></div>
+<div class="voice-wave-bar h-11 opacity-90 shadow-[0_0_10px_rgba(143,245,255,0.5)]"></div>
+<div class="voice-wave-bar h-6 opacity-40"></div>
+</div>
+</div>
+</section>
+<!-- Suggested Destinations - Bento Grid Inspired -->
+<section class="mt-10 flex-1 overflow-y-auto pr-2 custom-scrollbar">
+<h3 class="font-headline text-lg font-bold text-on-surface mb-6 flex items-center gap-2">
+                Suggested Destinations
+                <span class="h-[1px] flex-1 bg-outline-variant/20"></span>
+</h3>
+<div class="grid grid-cols-2 gap-4">
+<!-- Large Card -->
+<button class="col-span-2 bg-surface-container-high p-6 rounded-2xl flex items-center justify-between group hover:bg-surface-bright transition-all duration-300 text-left border-l-4 border-primary">
+<div class="flex items-center gap-5">
+<div class="w-14 h-14 rounded-xl bg-surface-container-highest flex items-center justify-center text-primary shadow-lg">
+<span class="material-symbols-outlined text-3xl" data-icon="work" style="font-variation-settings: 'FILL' 1;">work</span>
+</div>
+<div>
+<p class="font-headline text-xl font-bold text-on-surface group-hover:text-primary transition-colors">Dean's Office</p>
+<p class="text-on-surface-variant text-sm font-medium">Building A • Level 3</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" data-icon="arrow_forward">arrow_forward</span>
+</button>
+<!-- Half Card 1 -->
+<button class="bg-surface-container-high p-5 rounded-2xl flex flex-col gap-4 group hover:bg-surface-bright transition-all duration-300 text-left">
+<div class="w-10 h-10 rounded-lg bg-tertiary-container/20 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined" data-icon="restaurant">restaurant</span>
+</div>
+<div>
+<p class="font-headline font-bold text-on-surface group-hover:text-primary transition-colors">Main Cafe</p>
+<p class="text-on-surface-variant text-xs">Level 1 • South Wing</p>
+</div>
+</button>
+<!-- Half Card 2 -->
+<button class="bg-surface-container-high p-5 rounded-2xl flex flex-col gap-4 group hover:bg-surface-bright transition-all duration-300 text-left">
+<div class="w-10 h-10 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined" data-icon="science">science</span>
+</div>
+<div>
+<p class="font-headline font-bold text-on-surface group-hover:text-primary transition-colors">Lab 101</p>
+<p class="text-on-surface-variant text-xs">Level 1 • Research Hub</p>
+</div>
+</button>
+<!-- Half Card 3 -->
+<button class="bg-surface-container-high p-5 rounded-2xl flex flex-col gap-4 group hover:bg-surface-bright transition-all duration-300 text-left">
+<div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="local_library">local_library</span>
+</div>
+<div>
+<p class="font-headline font-bold text-on-surface group-hover:text-primary transition-colors">Study Hall</p>
+<p class="text-on-surface-variant text-xs">Building B • Level 4</p>
+</div>
+</button>
+<!-- Half Card 4 -->
+<button class="bg-surface-container-high p-5 rounded-2xl flex flex-col gap-4 group hover:bg-surface-bright transition-all duration-300 text-left">
+<div class="w-10 h-10 rounded-lg bg-surface-variant flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="print">print</span>
+</div>
+<div>
+<p class="font-headline font-bold text-on-surface group-hover:text-primary transition-colors">Print Center</p>
+<p class="text-on-surface-variant text-xs">Basement • Room 04</p>
+</div>
+</button>
+</div>
+</section>
+</main>
+<!-- BottomNavBar Shell -->
+<nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-md rounded-3xl bg-zinc-900/70 backdrop-blur-2xl flex justify-around items-center h-20 px-4 shadow-[0_8px_32px_rgba(0,0,0,0.8)] z-50">
+<a class="text-zinc-500 p-3 hover:text-cyan-200 transition-all active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="home_max">home_max</span>
+</a>
+<a class="bg-cyan-500/20 text-cyan-400 rounded-2xl p-3 shadow-[0_0_15px_rgba(143,245,255,0.3)] active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="near_me">near_me</span>
+</a>
+<a class="text-zinc-500 p-3 hover:text-cyan-200 transition-all active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="layers">layers</span>
+</a>
+<a class="text-zinc-500 p-3 hover:text-cyan-200 transition-all active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</a>
+</nav>
+<!-- Map Background Preview (Faded) -->
+<div class="fixed inset-0 -z-10 opacity-10 pointer-events-none">
+<img class="w-full h-full object-cover grayscale brightness-50" data-alt="abstract architectural floor plan blueprint with glowing digital lines and nodes in dark high-tech style" data-location="Future Tech Campus" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCyEPQy-IcsEOBkgVlq_F3bf1D47BmW9UMBe1iv5yKZarVO9wSeSgwJ8yuhSrU0V07dFNLGIPZAQU1dEXQpyYRjNc9PyOAd36knShiF8sAZDXrgM7CWgNPbnZqnN5h2w27Dvwo8NNFZXuCENAiKznKI3NOcpOPwOAp2QU-HMpa9UF0vq0Up_8yNFvUyZMZhCeG2rNRGSLIMtRwkzOnIhDJ-mOmVCYnYpxEqfxkJ6v2Rmi5kHB31Zc-82FMzUQWSd4lLHunK-URTZEg"/>
+<div class="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background"></div>
+</div>
+</body></html>

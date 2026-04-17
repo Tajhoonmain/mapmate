@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MapMate - AR Navigation</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-container": "#00213e",
+                        "surface-container-high": "#201f1f",
+                        "tertiary-fixed-dim": "#51a7fe",
+                        "primary": "#8ff5ff",
+                        "background": "#0e0e0e",
+                        "primary-dim": "#00deec",
+                        "secondary": "#2ff801",
+                        "on-primary-fixed-variant": "#005e64",
+                        "tertiary-dim": "#4aa2f9",
+                        "on-secondary-fixed-variant": "#0d6200",
+                        "secondary-dim": "#2be800",
+                        "surface-tint": "#8ff5ff",
+                        "surface": "#0e0e0e",
+                        "on-error-container": "#ffa8a3",
+                        "error": "#ff716c",
+                        "surface-container-lowest": "#000000",
+                        "inverse-primary": "#006a71",
+                        "secondary-fixed-dim": "#2be800",
+                        "primary-fixed": "#00eefc",
+                        "on-background": "#ffffff",
+                        "surface-container-highest": "#262626",
+                        "surface-dim": "#0e0e0e",
+                        "secondary-fixed": "#2ff801",
+                        "primary-container": "#00eefc",
+                        "tertiary-container": "#4aa2f9",
+                        "on-surface": "#ffffff",
+                        "outline-variant": "#494847",
+                        "on-secondary-container": "#e7ffd9",
+                        "secondary-container": "#106e00",
+                        "on-surface-variant": "#adaaaa",
+                        "surface-container-low": "#131313",
+                        "surface-variant": "#262626",
+                        "on-primary-fixed": "#003f43",
+                        "on-tertiary-fixed-variant": "#003b68",
+                        "surface-bright": "#2c2c2c",
+                        "outline": "#777575",
+                        "surface-container": "#1a1919",
+                        "primary-fixed-dim": "#00deec",
+                        "error-container": "#9f0519",
+                        "inverse-on-surface": "#565554",
+                        "on-tertiary-fixed": "#001930",
+                        "tertiary-fixed": "#72b5ff",
+                        "error-dim": "#d7383b",
+                        "on-secondary-fixed": "#064200",
+                        "inverse-surface": "#fcf8f8",
+                        "on-error": "#490006",
+                        "on-secondary": "#0b5800",
+                        "on-tertiary": "#002e52",
+                        "on-primary-container": "#005359",
+                        "tertiary": "#65afff",
+                        "on-primary": "#005d63"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .ar-grid-overlay {
+            background-image: radial-gradient(rgba(143, 245, 255, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body selection:bg-primary selection:text-on-primary overflow-hidden">
+<!-- Camera View (Mocked Background) -->
+<div class="fixed inset-0 z-0 overflow-hidden">
+<img alt="high-tech indoor hallway with architectural lighting and polished floors in a futuristic research facility" class="w-full h-full object-cover grayscale-[0.3] brightness-[0.4]" data-alt="high-tech indoor hallway with architectural lighting and polished floors in a futuristic research facility" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBW5aPjea_TtLOZHl-p_PRifL6jxeO_7QjeEZiG2hWvE-3ZR5auS04P6yCrd-uNbE4f61pRjKqja8nrQYj1LY1-WP8Y6YmRFTrf0AXgpk3FODkLBRzrSdoU0ExvOS1tBICJueyeE0OPDUH3qnET0pH55Cby-W6_RSzVsd0B5QbccstOg-NaHR9VfXqCyAa_8D59K0GVA3-aIvVhictwire2ftJmO_gQLhaNebFwBcid0QAwssHFiIv1pJ92pGKMFTj_D4wPX-8rieM"/>
+<!-- AR Perspective Grid Overlay -->
+<div class="absolute inset-0 ar-grid-overlay opacity-20 pointer-events-none"></div>
+</div>
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-xl flex justify-between items-center px-6 h-16 shadow-[0_0_20px_rgba(143,245,255,0.06)]">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-cyan-400">explore</span>
+<span class="font-headline font-bold tracking-tight text-2xl font-black text-cyan-400 tracking-tighter">MapMate</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 bg-secondary/10 px-3 py-1.5 rounded-full border border-secondary/20">
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">lock</span>
+<span class="text-[10px] font-headline font-bold uppercase tracking-wider text-secondary">Position Locked</span>
+</div>
+<button class="text-zinc-500 hover:bg-zinc-800/50 transition-colors p-2 rounded-full active:scale-95 duration-200">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Main AR Canvas -->
+<main class="relative h-screen w-full flex flex-col items-center justify-center pointer-events-none">
+<!-- Instruction Overlay (Top Floating) -->
+<div class="absolute top-24 pointer-events-auto">
+<div class="bg-surface-container-high/80 backdrop-blur-xl p-6 rounded-xl shadow-[0_0_15px_rgba(143,245,255,0.3)] flex items-center gap-6 border-l-4 border-secondary">
+<div class="flex flex-col">
+<span class="text-on-surface-variant font-label text-xs uppercase tracking-[0.2em] mb-1">Instruction</span>
+<span class="font-headline text-3xl font-bold text-on-surface">Turn right</span>
+</div>
+<div class="h-12 w-[1px] bg-outline-variant/30"></div>
+<div class="flex flex-col items-end">
+<span class="text-on-surface-variant font-label text-xs uppercase tracking-[0.2em] mb-1">In</span>
+<span class="font-headline text-3xl font-bold text-primary">45m</span>
+</div>
+</div>
+</div>
+<!-- Central AR Arrow Projection -->
+<div class="relative flex flex-col items-center justify-center transform perspective-1000 rotate-x-12 translate-y-12">
+<!-- Glow Effect -->
+<div class="absolute w-64 h-64 bg-primary/20 blur-[100px] rounded-full"></div>
+<!-- 3D Style Arrow -->
+<div class="relative flex flex-col items-center">
+<span class="material-symbols-outlined text-[160px] text-primary drop-shadow-[0_0_30px_rgba(143,245,255,0.8)] leading-none" style="font-variation-settings: 'wght' 200;">arrow_forward</span>
+<!-- Floating Distance Bubble -->
+<div class="mt-4 bg-primary text-on-primary px-4 py-1 rounded-full font-headline font-bold text-lg shadow-lg">
+                    45m
+                </div>
+</div>
+</div>
+<!-- Bottom UI Panel -->
+<div class="absolute bottom-32 w-full max-w-xl px-6 pointer-events-auto">
+<div class="bg-surface-container-highest/90 backdrop-blur-2xl rounded-3xl p-6 shadow-2xl border border-outline-variant/10">
+<div class="flex items-center justify-between gap-6">
+<div class="flex-1">
+<span class="text-on-surface-variant font-label text-[10px] uppercase tracking-[0.3em]">Current Destination</span>
+<h2 class="font-headline text-xl font-bold text-on-surface mt-1">Library - Room 204</h2>
+<div class="flex items-center gap-2 mt-2">
+<div class="h-1.5 flex-1 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full w-3/4 bg-gradient-to-r from-primary to-primary-dim rounded-full"></div>
+</div>
+<span class="text-[10px] font-label text-on-surface-variant font-medium">75%</span>
+</div>
+</div>
+<button class="bg-error-container hover:bg-error-dim text-on-surface px-8 py-4 rounded-2xl font-headline font-bold tracking-tight transition-all active:scale-95 flex items-center gap-2 group">
+<span class="material-symbols-outlined text-sm group-hover:rotate-90 transition-transform">close</span>
+                        STOP
+                    </button>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar (Hidden on this transactional screen as per filter rules, but structure maintained for anchor logic) -->
+<!-- Suppressed to prioritize navigation focus -->
+<!-- Quick Actions Floating -->
+<div class="fixed bottom-8 right-8 z-50 flex flex-col gap-4">
+<button class="w-14 h-14 bg-surface-container-high/90 backdrop-blur-lg rounded-2xl flex items-center justify-center text-on-surface shadow-xl border border-outline-variant/10 hover:bg-surface-bright active:scale-90 transition-all">
+<span class="material-symbols-outlined">layers</span>
+</button>
+<button class="w-14 h-14 bg-primary text-on-primary rounded-2xl flex items-center justify-center shadow-[0_0_20px_rgba(143,245,255,0.4)] hover:scale-105 active:scale-90 transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">near_me</span>
+</button>
+</div>
+<!-- Background Map Preview (Small Window) -->
+<div class="fixed bottom-8 left-8 z-50 group">
+<div class="relative w-28 h-28 rounded-2xl overflow-hidden border-2 border-surface-container-high shadow-2xl transition-all group-hover:scale-110">
+<img alt="minimalist architectural map floor plan in blue and white tones" class="w-full h-full object-cover" data-alt="minimalist architectural map floor plan in blue and white tones" data-location="Future Tech Campus Library" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjyttlC4KSBXuDPNE0BXE8fwSoAo-T7qe-E7LZ2t72Pt2oWYtKZTPHyW2HxN7zrq1KC18NdNuZKZtdtoERMWhU1llxRLZ2PC2IPyO9ycA6prxz1AmTV66ZvkW8iX5EbVf4BLRRKM77rT0Jxiv8fW1ETCs-Cwfi06oHqDnorC_SHRl9synEwxsemQW_xdrbGfMy3yofDK6ip-HCNO37MqrW7RUTaaDDoqlEKi1BI_ZAHRnsGGwHOx061pHr-h4scwpTKgUDjX2Ikn0"/>
+<div class="absolute inset-0 bg-primary/10"></div>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-primary rounded-full animate-pulse shadow-[0_0_10px_rgba(143,245,255,1)]"></div>
+</div>
+</div>
+</body></html>
