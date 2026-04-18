@@ -74,6 +74,15 @@ export default function Dashboard() {
                 <p className="text-xs text-on-surface-variant">Live</p>
               </div>
             </li>
+            <li className="flex items-center gap-4 group cursor-pointer">
+              <div className="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center">
+                <span className="material-symbols-outlined text-sm text-on-surface-variant">apartment</span>
+              </div>
+              <div className="flex-1 border-b border-outline-variant/10 pb-3">
+                <p className="text-sm font-medium">Brabers Entrance</p>
+                <p className="text-xs text-on-surface-variant">Live</p>
+              </div>
+            </li>
           </ul>
         </div>
       </div>

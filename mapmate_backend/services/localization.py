@@ -29,6 +29,8 @@ class LocalizationService:
                 res = active_module.localize_fbs(tmp.name)
             elif current_env == "MECH":
                 res = active_module.localize_mech(tmp.name)
+            elif current_env == "Brabers":
+                res = active_module.localize_brabers(tmp.name)
             else:
                 return {"status": "failed", "error": "Localization module undefined for this environment."}
             

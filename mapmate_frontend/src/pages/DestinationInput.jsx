@@ -145,6 +145,19 @@ export default function DestinationInput() {
                 </div>
                 <span className="material-symbols-outlined text-primary opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all">arrow_forward</span>
               </button>
+
+              <button onClick={() => { setQuery("Brabers Entrance"); handleSearch(); }} className="col-span-2 bg-surface-container-high p-6 rounded-2xl flex items-center justify-between group hover:bg-surface-bright transition-all duration-300 text-left border-l-4 border-primary">
+                <div className="flex items-center gap-5">
+                  <div className="w-14 h-14 rounded-xl bg-surface-container-highest flex items-center justify-center text-primary shadow-lg">
+                    <span className="material-symbols-outlined text-3xl" style={{fontVariationSettings: "'FILL' 1"}}>apartment</span>
+                  </div>
+                  <div>
+                    <p className="font-headline text-xl font-bold text-on-surface group-hover:text-primary transition-colors">Brabers Entrance</p>
+                    <p className="text-on-surface-variant text-sm font-medium">Campus Map Mode</p>
+                  </div>
+                </div>
+                <span className="material-symbols-outlined text-primary opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all">arrow_forward</span>
+              </button>
               
               <div className="col-span-2 bg-surface-container-low p-5 rounded-2xl flex flex-col gap-4 text-center opacity-70">
                 <div className="mx-auto w-10 h-10 rounded-lg bg-surface-variant flex items-center justify-center text-on-surface-variant">

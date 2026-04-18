@@ -87,6 +87,21 @@ export default function EnvironmentSelection() {
           </div>
         </div>
 
+        {/* Brabers Card */}
+        <div onClick={() => handleSelect('Brabers')} className={`md:col-span-3 group relative overflow-hidden rounded-xl bg-surface-container-high p-8 flex flex-col justify-between transition-all hover:bg-surface-container-highest cursor-pointer ${activeEnv === 'Brabers' ? 'border-2 border-secondary' : ''}`}>
+          <div className="absolute inset-0 opacity-10">
+            <img className="w-full h-full object-cover" src="https://images.unsplash.com/photo-1541886121406-8d194bea9e0e?auto=format&fit=crop&q=80&w=1000" alt="Brabers"/>
+          </div>
+          <div className="relative z-10">
+            <div className={`text-secondary w-fit px-3 py-1 rounded-full flex items-center gap-2 ${activeEnv === 'Brabers' ? 'bg-secondary/20' : 'bg-surface/50 text-surface-variant'}`}>
+              <span className={`w-2 h-2 rounded-full ${activeEnv === 'Brabers' ? 'bg-secondary' : 'bg-surface-variant'}`}></span>
+              <span className="text-[10px] font-bold tracking-widest uppercase">{activeEnv === 'Brabers' ? 'Active' : 'Standby'}</span>
+            </div>
+            <h3 className="font-headline text-4xl font-bold mt-8">Brabers</h3>
+            <p className="text-on-surface-variant font-body text-xs mt-1 uppercase tracking-widest font-medium">Engineering Labs Building</p>
+          </div>
+        </div>
+
       </div>
     </main>
   );

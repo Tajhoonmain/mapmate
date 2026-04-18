@@ -13,10 +13,14 @@ class MockEnvironmentModule:
     def localize_lib(*args, **kwargs):
         return {"success": True, "building": "Library", "map_x": 0.0, "map_y": 0.0, "confidence": 0.99, "is_simulated": True}
 
+    @staticmethod
+    def localize_brabers(*args, **kwargs):
+        return {"success": True, "building": "Brabers", "map_x": 0.0, "map_y": 0.0, "confidence": 0.99, "is_simulated": True}
+
 class EnvironmentManager:
     def __init__(self):
-        # MVP: Only Library and Admin are currently mapped for localization
-        self.available_environments = ["Admin", "Library"]
+        # MVP: Admin, Library, and Brabers are mapped for localization
+        self.available_environments = ["Admin", "Library", "Brabers"]
         self.loaded_environment = None
         self.backend_dir = Path(__file__).resolve().parent.parent.parent / "Backend"
         if str(self.backend_dir) not in sys.path:
@@ -58,6 +62,9 @@ class EnvironmentManager:
             elif env_name == "Library":
                 from Library import LC_Lib
                 self.active_module = LC_Lib
+            elif env_name == "Brabers":
+                from Brabers import LC_Brabers
+                self.active_module = LC_Brabers
                 
             logging.info(f"Loaded datasets and module for {env_name}")
             self.loaded_environment = env_name
