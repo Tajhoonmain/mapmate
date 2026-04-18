@@ -25,7 +25,7 @@ class LC_Brabers:
     def load_model(cls):
         if cls.model is None:
             # Recreate exactly as in config.yaml
-            cls.model = HallwayLocalizer(model_name="resnet18", pretrained=False, mode="classification", num_classes=10)
+            cls.model = HallwayLocalizer(model_name="resnet18", pretrained=False, mode="classification", num_classes=8)
             cls.model.load_state_dict(torch.load(cls.P_CHECKPOINT, map_location=cls.device))
             cls.model.to(cls.device)
             cls.model.eval()
