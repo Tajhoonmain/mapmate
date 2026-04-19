@@ -61,7 +61,13 @@ class LocalizationService:
         active_module = self.env_manager.get_active_module()
 
         if not current_env or not active_module:
-            return {"status": "failed", "error": "No environment loaded. Call /select-environment first."}
+            print("[Localize] No environment loaded. Auto-loading Brabers.")
+            self.env_manager.load_environment("Brabers")
+            current_env  = self.env_manager.get_current_environment()
+            active_module = self.env_manager.get_active_module()
+            
+            if not current_env or not active_module:
+                return {"status": "failed", "error": "Auto-load of default environment (Brabers) failed."}
 
         # ── 1. Save debug image (raw bytes, untouched) ───────────────────────
         debug_path = _save_debug_image(image_bytes, current_env)

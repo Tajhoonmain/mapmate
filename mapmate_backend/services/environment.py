@@ -27,6 +27,8 @@ class EnvironmentManager:
             sys.path.append(str(self.backend_dir))
         
         self.active_module = None
+        # Auto-load Brabers as the default environment so /localize doesn't fail on fresh start
+        self.load_environment("Brabers")
 
     def get_environments(self):
         return self.available_environments
