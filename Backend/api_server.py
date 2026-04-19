@@ -8,7 +8,14 @@ from collections import deque
 
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from PIL import Image
+from PIL import Image, ImageOps
+
+# base MUST be defined before DEBUG_DIR so it resolves correctly at startup
+base = os.path.dirname(os.path.abspath(__file__))
+
+# Persist uploaded images for byte-level debugging (compare vs smoke-test original)
+DEBUG_DIR = os.path.join(base, "debug_uploads")
+os.makedirs(DEBUG_DIR, exist_ok=True)
 
 import hybrid_infer
 from route import NavigationEngine
@@ -22,7 +29,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-base = os.path.dirname(os.path.abspath(__file__))
+# base already defined above
 nav_engine = NavigationEngine(
     os.path.join(base, "graph.json"),
     os.path.join(base, "rooms.json")
@@ -52,21 +59,26 @@ def get_rooms():
 async def localize(file: UploadFile = File(...)):
     """
     Upload an image → get structured localization result.
-
-    Response:
-    {
-        "building":    "Brabers",
-        "zone":        2,
-        "room":        "G4 Offices",
-        "source":      "OCR override",
-        "confidence":  0.93,
-        "message":     "Detected Location: G4 Offices (Brabers) — Confidence: High",
-        "status":      "ok"
-    }
     """
     try:
+        # 1. Read raw bytes
         contents = await file.read()
-        image = Image.open(io.BytesIO(contents)).convert("RGB")
+        file_size = len(contents)
+        
+        # 2. Save for debugging (to compare with original)
+        debug_path = os.path.join(DEBUG_DIR, f"debug_{file.filename}")
+        with open(debug_path, "wb") as f:
+            f.write(contents)
+
+        # 3. Load and handle orientation
+        raw_image = Image.open(io.BytesIO(contents))
+        orig_size = raw_image.size
+        
+        # This handles mobile uploads where images are rotated via EXIF
+        image = ImageOps.exif_transpose(raw_image).convert("RGB")
+        processed_size = image.size
+
+        # 4. Run Hybrid Pipeline
         result = hybrid_infer.run(image)
 
         # Zone stabilization for live-camera use
@@ -74,9 +86,24 @@ async def localize(file: UploadFile = File(...)):
         stable_zone = max(set(_history), key=list(_history).count)
         result["zone"] = stable_zone
 
+        # 5. Add Debug Metadata
+        result["debug"] = {
+            "filename": file.filename,
+            "bytes_received": file_size,
+            "original_resolution": f"{orig_size[0]}x{orig_size[1]}",
+            "processed_resolution": f"{processed_size[0]}x{processed_size[1]}",
+            "orientation_fixed": orig_size != processed_size,
+            "pipeline": "hybrid_infer (OCR + Vision classifier)",
+            "saved_debug_image": debug_path,
+            "all_probs": result.get("all_probs", {}),
+        }
+
+        print(f"DEBUG: Localized {file.filename} | Size: {file_size} bytes | Res: {processed_size}")
         return result
 
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
 
 

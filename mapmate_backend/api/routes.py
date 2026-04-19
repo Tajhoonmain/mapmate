@@ -25,16 +25,19 @@ async def select_environment(req: EnvironmentSelectRequest):
     except Exception as e:
          return JSONResponse(status_code=500, content={"error": str(e), "code": 500})
 
-@router.post("/localize", response_model=LocationResponse)
+@router.post("/localize")
 async def localize(file: UploadFile = File(...)):
-    # Assuming frontend sends camera frame as multipart upload
+    # Reads raw multipart bytes — no re-encoding
     try:
         contents = await file.read()
+        print(f"[/localize] filename={file.filename} size={len(contents)} content_type={file.content_type}")
         result = localization_service.localize(contents)
-        if result["status"] == "failed":
+        if result.get("status") == "failed":
             return JSONResponse(status_code=500, content={"error": result.get("error", "Localization failed"), "code": 500})
         return result
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         return JSONResponse(status_code=500, content={"error": str(e), "code": 500})
 
 @router.post("/navigate", response_model=NavigateResponse)
