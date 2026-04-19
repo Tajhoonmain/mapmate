@@ -20,8 +20,11 @@ class LocationResponse(BaseModel):
 
 class NavigateRequest(BaseModel):
     destination: str
+    current_zone: Optional[int] = None
 
 class NavigateResponse(BaseModel):
-    path: List[List[float]]
-    distance: float
-    instructions: List[str]
+    path: List[int] = [] # Changed from List[List[float]] to support zones or flexible paths
+    distance: float = 0.0
+    instructions: List[str] = []
+    next_step: Optional[str] = None
+    zones_remaining: Optional[int] = None

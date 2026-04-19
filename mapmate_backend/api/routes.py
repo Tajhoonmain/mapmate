@@ -76,7 +76,7 @@ async def localize(file: UploadFile = File(...)):
 @router.post("/navigate", response_model=NavigateResponse)
 async def navigate(req: NavigateRequest):
     try:
-        result = navigation_service.get_path(req.destination)
+        result = navigation_service.get_path(req.destination, getattr(req, "current_zone", None))
         return result
     except ValueError as e:
          return JSONResponse(status_code=400, content={"error": str(e), "code": 400})
