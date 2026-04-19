@@ -1,11 +1,44 @@
 from fastapi import APIRouter, File, UploadFile
 from fastapi.responses import JSONResponse
+from pathlib import Path
+import json
 from .schemas import EnvironmentSelectRequest, LocationResponse, NavigateRequest, NavigateResponse
 from services.environment import EnvironmentManager
 from services.localization import LocalizationService
 from services.navigation import NavigationService
 
 router = APIRouter()
+
+_BACKEND_DIR = Path(__file__).resolve().parent.parent.parent / "Backend"
+
+
+@router.get("/health")
+def health():
+    return {"status": "ok", "mode": "MapMate Hybrid Backend"}
+
+
+@router.get("/rooms")
+def get_rooms():
+    """Return the Brabers room→zone map so the frontend dropdown populates."""
+    rooms_file = _BACKEND_DIR / "rooms.json"
+    if rooms_file.exists():
+        return json.loads(rooms_file.read_text())
+    # Hardcoded fallback so the dropdown always has options
+    return {
+        "Washrooms": 0,
+        "Main Lecture Hall": 0,
+        "G5 Offices": 1,
+        "G4 Offices": 2,
+        "Exam Hall 1": 3,
+        "Old PC Lab": 3,
+        "Exam Hall 2": 4,
+        "Conference Room": 4,
+        "Exam Hall 3": 5,
+        "New PC Lab": 5,
+        "G3 Offices": 6,
+        "Exam Hall 4": 7,
+        "Lecture Hall 2": 7,
+    }
 
 env_manager = EnvironmentManager()
 localization_service = LocalizationService(env_manager)
